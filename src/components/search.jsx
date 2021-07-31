@@ -6,10 +6,30 @@ import {
   InputLabel,
   Select,
   Button,
+  Typography,
+  CardActions,
+  CardContent,
+  CardMedia,
+  CardActionArea,
+  Card,
+  IconButton,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Dialog,
+  Divider,
 } from "@material-ui/core";
+import "./variousTypes/style.css";
+
+import CloseIcon from "@material-ui/icons/Close";
 
 import SearchIcon from "@material-ui/icons/Search";
 import BreakFasts from "./variousTypes/breakfasts";
+import Snacks from "./variousTypes/snasks";
+import TeaTimes from "./variousTypes/teaTime";
+import Lunch from "./variousTypes/lunchs";
+import Dinner from "./variousTypes/dinner";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   from: {
@@ -33,6 +53,43 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Search = () => {
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const [text, setText] = useState("");
+  const [diet, setDiet] = useState("");
+  const [health, setHealth] = useState("");
+  const [cuisine, setCuisine] = useState("");
+
+  const [data, setData] = useState([]);
+
+  const apiKey = "&app_id=4cdbbc1e&app_key=bfe9e1d4954450261c74bec1e680477f";
+
+  const URL = `https://api.edamam.com/api/recipes/v2?type=public&q=${
+    text === "" ? "" : text
+  }${apiKey}${diet === "" ? "" : `&diet=${diet}`}${
+    health === "" ? "" : `&health=${health}`
+  }${cuisine === "" ? "" : `&cuisineType=${cuisine}`}`;
+
+  const getData = () => {
+    axios
+      .get(URL)
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((err) => {
+        console.log("some error " + err.message);
+      });
+  };
+  console.log(URL);
+  console.log(data);
+
   const classes = useStyles();
   return (
     <>
@@ -43,12 +100,17 @@ const Search = () => {
             type="text"
             label="Search any Recipe"
             variant="outlined"
+            onChange={(e) => setText(e.target.value)}
             autoFocus
           />
           {/* ------diet label */}
           <FormControl variant="filled" className={classes.formControl}>
             <InputLabel>Select Diet label</InputLabel>
-            <Select native label="Select Diet label">
+            <Select
+              onChange={(e) => setDiet(e.target.value)}
+              native
+              label="Select Diet label"
+            >
               <option aria-label="None" value=" " />
               <option value="balanced">Balanced</option>
               <option value="high-fiber">High Fiber</option>
@@ -60,7 +122,11 @@ const Search = () => {
           {/* health lebel */}
           <FormControl variant="filled" className={classes.formControl}>
             <InputLabel>Select Health Level</InputLabel>
-            <Select native label="Select Health Level">
+            <Select
+              onChange={(e) => setHealth(e.target.value)}
+              native
+              label="Select Health Level"
+            >
               <option aria-label="None" value=" " />
               <option value="low-sugar">Low Sugar</option>
               <option value="kidney-friendly">Kidney Friendly</option>
@@ -74,7 +140,11 @@ const Search = () => {
           {/* cuisine type */}
           <FormControl variant="filled" className={classes.formControl}>
             <InputLabel>Select Cuisine type</InputLabel>
-            <Select native label="Select Cuisine type">
+            <Select
+              onChange={(e) => setCuisine(e.target.value)}
+              native
+              label="Select Cuisine type"
+            >
               <option aria-label="None" value=" " />
               <option value="American">American</option>
               <option value="Indian">Indian</option>
@@ -92,6 +162,7 @@ const Search = () => {
             variant="contained"
             color="primary"
             size="medium"
+            onClick={getData}
             className={classes.button}
             startIcon={<SearchIcon />}
           >
@@ -99,9 +170,132 @@ const Search = () => {
           </Button>
         </form>
       </div>
-      <div>
-        <BreakFasts />
-      </div>
+
+      {data.length === 0 ? (
+        <div>
+          <Snacks />
+          <TeaTimes />
+          <BreakFasts />
+          <Lunch />
+          <Dinner />
+        </div>
+      ) : (
+        <div>
+          {data.hits.slice(0, 80).map((recipe, key) => {
+            return (
+              <div className="card">
+                <Card align="center">
+                  <CardActionArea className="actionArea">
+                    <CardMedia
+                      gutterBottom
+                      component="img"
+                      alt="recipe image"
+                      height="140"
+                      image={recipe.recipe.image}
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h6" component="h2">
+                        {recipe.recipe.label}
+                      </Typography>
+                    </CardContent>
+                    <div className="first">
+                      <h5 className="text1">
+                        {recipe.recipe.healthLabels.slice(0, 2).join(", ")}
+                      </h5>
+                    </div>
+                    <div className="second">
+                      <h5 className="text2">
+                        {recipe.recipe.cautions.slice(0, 1)}
+                      </h5>
+                    </div>
+                  </CardActionArea>
+
+                  <CardActions>
+                    <Button
+                      className="button"
+                      onClick={handleClickOpen}
+                      size="small"
+                      color="primary"
+                      variant="outlined"
+                    >
+                      Details
+                    </Button>
+                  </CardActions>
+                </Card>
+
+                <Dialog
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                  className="dialog"
+                >
+                  <DialogTitle id="alert-dialog-title">
+                    {recipe.recipe.label}
+                  </DialogTitle>
+                  <IconButton
+                    aria-label="close"
+                    className={classes.closeButton}
+                    onClick={handleClose}
+                    color="primary"
+                  >
+                    <CloseIcon color="primary" />
+                  </IconButton>
+                  <DialogContent>
+                    <div>
+                      <CardMedia
+                        gutterBottom
+                        component="img"
+                        alt="Contemplative Reptile"
+                        className="image"
+                        image={recipe.recipe.image}
+                      />
+                      <div>
+                        <Typography variant="h6" color="primary">
+                          <span>{recipe.recipe.calories}</span> Calories Energy
+                        </Typography>
+                        <Divider />
+                        <Typography variant="h6" color="initial">
+                          Cautions
+                        </Typography>
+                        <div className="second">
+                          <Button variant="outlined" color="secondary">
+                            Sulfites
+                          </Button>
+                        </div>
+                        <Typography variant="h6" color="initial">
+                          HealthLabels
+                        </Typography>
+                        <div className="first">
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            color="primary"
+                          >
+                            primary
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      startIcon={<CloseIcon />}
+                      onClick={handleClose}
+                      color="primary"
+                      autoFocus
+                      variant="contained"
+                      size="small"
+                    >
+                      close
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </>
   );
 };

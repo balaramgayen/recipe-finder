@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BreakFasts = () => {
+const TeaTimes = () => {
   const [open, setOpen] = useState(false);
 
   const [data, setData] = useState([]);
@@ -39,7 +39,7 @@ const BreakFasts = () => {
   const getData = () => {
     axios
       .get(
-        "https://api.edamam.com/api/recipes/v2?type=public&q=breakfast&app_id=4cdbbc1e&app_key=bfe9e1d4954450261c74bec1e680477f"
+        "https://api.edamam.com/api/recipes/v2?type=public&q=teatime&app_id=4cdbbc1e&app_key=bfe9e1d4954450261c74bec1e680477f"
       )
       .then((data) => setData(data.data))
       .catch((err) => console.log(err));
@@ -62,16 +62,16 @@ const BreakFasts = () => {
   const classes = useStyles();
   return (
     <>
-      <div className="breakFast">
+      <div className="teaTime">
         <Typography align="center" variant="h5">
-          BreakFasts
+          TeaTimes
         </Typography>
       </div>
       {data.length === 0 ? (
         <CircularProgress />
       ) : (
         <div>
-          {data.hits.slice(6, 11).map((recipe, key) => {
+          {data.hits.slice(0, 5).map((recipe, key) => {
             return (
               <div className="card">
                 <Card align="center">
@@ -190,4 +190,4 @@ const BreakFasts = () => {
   );
 };
 
-export default BreakFasts;
+export default TeaTimes;
