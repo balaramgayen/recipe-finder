@@ -1,0 +1,56 @@
+.breakFast{
+    height: auto;
+    width: 100%;
+    color: white;
+     background: #ef32d9;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #89fffd, #ef32d9);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #89fffd, #ef32d9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    ;
+    border-radius: 15px 0px 15px 0px;
+}
+
+
+.card{
+    display: inline-block !important;
+    margin: 10px !important;
+    width: 222px !important;
+}
+
+
+.first{
+    margin: 0px;
+    padding: 0px;
+}
+.second{
+    margin: 0px;
+    padding: 0px;
+}
+
+
+.text1{
+    display: inline-block;
+    margin: 0px;
+    margin-left: 6px;
+    color: rgb(6, 99, 6);
+
+}
+
+.text2{
+    display: inline-block;
+    margin: 0px;
+    margin-left: 6px;
+    color: rgb(190, 97, 97);
+}
+
+.actionArea{
+    background-color: rgb(232, 235, 250) !important;
+}
+
+.button{
+    margin: auto !important;
+    height: 35px !important;
+}
+
+.dialog{
+    margin: auto;
+}
