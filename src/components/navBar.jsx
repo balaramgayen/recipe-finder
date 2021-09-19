@@ -5,15 +5,7 @@ import {
   Typography,
   Grid,
   Hidden,
-  FormControl,
-  TextField,
-  MenuItem,
-  InputLabel,
-  Select,
-  InputAdornment,
 } from "@material-ui/core";
-
-import SearchIcon from "@material-ui/icons/Search";
 
 import firstImage from "./images/Cooking-bro.png";
 import secondImage from "./images/Cooking-pana.png";

@@ -102,3 +102,31 @@ background: linear-gradient(to left, #8E54E9, #4776E6); /* W3C, IE 10+/ Edge, Fi
 .spinner{
     left: 20px !important;
 }
+
+.show_modal{
+    position: fixed;
+    height: 100px;
+    width: 100px;
+    top: 100px;
+    left: 0px;
+    background-color: #4776E6;
+    color: white;
+    opacity: 1;
+    visibility: visible;
+    transition: .3s;
+    z-index: 1000;
+}
+
+.hide_modal{
+    position: fixed;
+    height: 100px;
+    width: 100px;
+    top: 100px;
+    left: 0px;
+    background-color: #4776E6;
+    color: white;
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s;
+    z-index: 1000;
+}
